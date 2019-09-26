@@ -14,7 +14,7 @@ class Risk(): #should i call it Trader? or something else?
     self.var = var
 
   def send(self, signals):
-    print("im getting the signal at least")
+    #print("im getting the signal at least")
     #here is where we make the magic
 
     #for now i just apply the signal value as a order quantity and that is it (as it was on exampleMarcelo.py)

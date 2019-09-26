@@ -1,5 +1,6 @@
 from event import Event
 from datetime import datetime
+import boto3
 
 class MarketData():
 

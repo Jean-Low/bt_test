@@ -31,6 +31,7 @@ class TradingSystem():
 
   def inject(self, event):
     instrument = event.instrument
+    #print('instrument: ', instrument)
     if instrument in self.books:
       self.books[instrument].inject(deepcopy(event))
 

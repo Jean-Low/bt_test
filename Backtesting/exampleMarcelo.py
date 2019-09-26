@@ -12,12 +12,14 @@ class RSI(Strategy):
   SIZE = 5
 
   def __init__(self):
+    
     self.prices = []
     self.last_price = 0
     self.rs = []
     self.signal = 0
 
   def _get_rs(self):
+    """
     slice_prices = self.prices
     if len(self.prices) > self.SIZE:
       slice_prices = self.prices[-self.SIZE:]
@@ -32,6 +34,8 @@ class RSI(Strategy):
     avg_high = sum(highs) / len(slice_prices) if len(slice_prices) else 0
     avg_low = sum(lows) / len(slice_prices) if len(slice_prices) else 1
     return avg_high / avg_low if avg_low else 0
+    """
+    pass
 
   def _calculate_rsi(self):
     rs = self._get_rs()
