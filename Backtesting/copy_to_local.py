@@ -4,7 +4,7 @@ import os
 import sys
 
 
-def GetStrategiesToLocal(strategies, local, bucket):
+def GetFilesToLocal(strategies, local, bucket, extension):
     """
     params:
     - prefix: pattern to match in s3
@@ -12,7 +12,7 @@ def GetStrategiesToLocal(strategies, local, bucket):
     - bucket: s3 bucket with target contents
     - client: initialized s3 client object
     """
-    client =  boto3.client('s3')
+    client = boto3.client('s3')
     keys = []
     dirs = []
     next_token = ''
@@ -35,10 +35,9 @@ def GetStrategiesToLocal(strategies, local, bucket):
         next_token = results.get('NextContinuationToken')
         tempKeys = []
         for key in keys:
-            if key.split('.py')[0] in strategyNames:
+            if key.split(extension)[0] in strategies:
                 tempKeys.append(key)
         keys = tempKeys
-        print(keys)
     for d in dirs:
         dest_pathname = os.path.join(local, d)
         if not os.path.exists(os.path.dirname(dest_pathname)):
@@ -49,11 +48,12 @@ def GetStrategiesToLocal(strategies, local, bucket):
             os.makedirs(os.path.dirname(dest_pathname))
         client.download_file(bucket, k, dest_pathname)
 
-try:
-    shutil.rmtree('strategies')
-except:
-    print("Folder dont exists")
 
 args = sys.argv
-strategyNames = args[1:]
-GetStrategiesToLocal(strategyNames, 'strategies', 'simuladorestrategias')
+relationNames = args[1:]
+strategyNames = [x.split(':')[0] for x in relationNames]
+modelClassesNames = [x.split(':')[1].lower().capitalize() for x in relationNames]
+modelObjectNames = [x.split(':')[1].lower()for x in relationNames]
+GetFilesToLocal(strategyNames, 'strategies', 'simuladorestrategias', '.py')
+GetFilesToLocal(modelClassesNames, 'models', 'simuladormodelos', '.py')
+GetFilesToLocal(modelObjectNames, 'models', 'simuladormodelos', '.pkl')
