@@ -1,3 +1,4 @@
+import shutil
 import boto3
 import os
 import sys
@@ -48,8 +49,11 @@ def GetStrategiesToLocal(strategies, local, bucket):
             os.makedirs(os.path.dirname(dest_pathname))
         client.download_file(bucket, k, dest_pathname)
 
+try:
+    shutil.rmtree('strategies')
+except:
+    print("Folder dont exists")
 
 args = sys.argv
 strategyNames = args[1:]
-#print(strategyNames)
 GetStrategiesToLocal(strategyNames, 'strategies', 'simuladorestrategias')
