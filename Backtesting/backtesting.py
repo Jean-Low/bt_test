@@ -23,6 +23,43 @@ def evaluate(strategy, type, files):
   ts.submit(strategy.id, strategy.close())
   return strategy.summary()
 
+def evaluateMult(strategies, types, files ):
+  #print('types: ', types)
+  #print('files: ', files)
+  #print('strategies: ', strategies)
+
+  if(len(strategies) != len(types) or len(types) != len(files)):
+    return("ERROR! - evaluateMult arguments require the same number of items")
+
+  for s in strategies:
+    s.clear()
+
+  data = MarketData()
+  ts = TradingSystem()
+
+  for i in range(0,len(strategies)):
+    for instrument, file in files[i].items():
+      ts.createBook(instrument)
+      ts.subscribe(instrument,strategies[i])
+      if(types[i] == MarketData.TICK):
+        data.loadBBGTick(file, instrument)
+      if(types[i] == MarketData.HIST):
+        data.loadYAHOOHist(file, instrument)
+      if(types[i] == MarketData.INTR):
+        data.loadBBGIntr(file, instrument)
+
+  data.run(ts)
+
+  summary = []
+  
+  for strategy in strategies:
+    ts.submit(strategy.id, strategy.close())
+    summary.append(strategy.summary())
+  
+  return summary
+  
+  
+
 def evaluateTick(strategy, files):
   return evaluate(strategy, MarketData.TICK, files)
 

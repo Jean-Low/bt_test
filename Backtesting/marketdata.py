@@ -10,8 +10,17 @@ class MarketData():
 
     self.events = {}
 
-  def loadBBGTick(self, file, instrument):
+    self.loaded_files = []
 
+  def loadBBGTick(self, file, instrument):
+    print('file: ', file)
+    
+    if(file in self.loaded_files):
+          print("WARNING: Tried to read the same file more than once")
+          return
+
+    self.loaded_files.append(file)
+    
     with open(file,'r') as file:
       data = file.read()
     

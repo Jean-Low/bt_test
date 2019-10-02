@@ -22,6 +22,5 @@ class Risk(): #should i call it Trader? or something else?
     orders = []
     for signal in signals:
           orders.append(Order(signal.instrument, signal.value,0))
-    
     self.ts.submit(None,orders)
     

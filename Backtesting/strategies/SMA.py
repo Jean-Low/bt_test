@@ -12,6 +12,8 @@ import Model
 class SMA(Strategy):
     
   def __init__(self):
+        
+    self.name = "SMA"
     self.prices = []
     self.last_price = None
     self.alpha = 0.005
@@ -24,6 +26,7 @@ class SMA(Strategy):
     return self.model.Predict(prices)
 
   def push(self, event):
+    print("push " + self.name)
     #Classe que ser[a retornada para o modelo de risco
     signals = []
     #Guarda os ultimos precos
@@ -43,4 +46,4 @@ class SMA(Strategy):
 
     return signals
 
-print(evaluateTick(SMA(), {'PETR4':'2018-03-07.csv'}))
+#print(evaluateTick(SMA(), {'PETR4':'2018-03-07.csv'}))

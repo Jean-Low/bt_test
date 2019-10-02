@@ -13,13 +13,13 @@ class RSI(Strategy):
 
   def __init__(self):
     
+    self.name = "RSI"
     self.prices = []
     self.last_price = 0
     self.rs = []
     self.signal = 0
 
   def _get_rs(self):
-    """
     slice_prices = self.prices
     if len(self.prices) > self.SIZE:
       slice_prices = self.prices[-self.SIZE:]
@@ -34,8 +34,6 @@ class RSI(Strategy):
     avg_high = sum(highs) / len(slice_prices) if len(slice_prices) else 0
     avg_low = sum(lows) / len(slice_prices) if len(slice_prices) else 1
     return avg_high / avg_low if avg_low else 0
-    """
-    pass
 
   def _calculate_rsi(self):
     rs = self._get_rs()
@@ -44,8 +42,9 @@ class RSI(Strategy):
 
   def push(self, event):
     #orders = []
+    print("push RSI")
     signals = []
-    price = event.price[3]
+    price = event.price
     self.prices.append(price)
     if len(self.prices) > 0:
       rsi = self._calculate_rsi()
@@ -70,6 +69,6 @@ class RSI(Strategy):
           #orders.append(Order(event.instrument, 1, 0))
           signals.append(Signal(event.instrument, 1))
         self.signal = 1
-    return signals
+    return signals  
 
-print(evaluateHist(RSI(), {'IBOV':'^BVSP.csv'}))
+#print(evaluateHist(RSI(), {'IBOV':'^BVSP.csv'}))
