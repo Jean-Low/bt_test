@@ -1,6 +1,5 @@
 from event import Event
 from datetime import datetime
-import boto3
 
 class MarketData():
 
@@ -20,7 +19,7 @@ class MarketData():
           return
 
     self.loaded_files.append(file)
-    
+
     with open(file,'r') as file:
       data = file.read()
     
