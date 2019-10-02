@@ -5,20 +5,28 @@ from event import Event
 from riskSignal import Signal
 import numpy as np
 import pickle
-
-#import do modelo
-import Model
+import sys
 
 class SMA2(Strategy):
     
-  def __init__(self):
+  def __init__(self, model):
         
     self.name = "SMA2"
     self.prices = []
     self.last_price = None
     self.alpha = 0.005
-    with open ("model.pkl", "rb") as file:
+
+    print("Init " + self.name)
+    print("Using " + model)
+
+    exec("from models.{0} import {0}".format(model))
+    exec("sys.modules['{0}'] = sys.modules['models.{0}']".format(model))
+
+    with open ("./models/{0}.pkl".format(model.lower()), 'rb') as file:
+      self.model = None
+      print(file)
       self.model = pickle.load(file)
+
 
   def predict(self):
     prices = np.array(self.prices)
